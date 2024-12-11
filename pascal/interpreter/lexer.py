@@ -10,9 +10,11 @@ class Lexer:
         self._text = s
         self._pos = 0
         self._current_char = self._text[self._pos]
+
     def __skip(self):
         while (self._current_char is not None and self._current_char.isspace()):
             self.__forward()
+
     def __integer(self):
         result = ""
         has_decimal_point = False
@@ -26,6 +28,7 @@ class Lexer:
                 break
             self.__forward()
         return result
+
     def __forward(self):
         self._pos += 1
         if self._pos > len(self._text) -1:
@@ -39,6 +42,7 @@ class Lexer:
             result += self._current_char
             self.__forward()
         return result
+
     def next(self) -> Token:
         while self._current_char:
             if self._current_char.isspace():
@@ -52,11 +56,10 @@ class Lexer:
                             return Token(TokenType.INTEGER_NUMBER, self.parser.interpreter.variables[var])
                         else:
                             return var
-
                 return Token(TokenType.VARIABLE, var_name)
             if self._current_char.isdigit():
                 return Token(TokenType.INTEGER_NUMBER, self.__integer())
-            if self._current_char == ':':  # Checking for assignment operator ':='
+            if self._current_char == ':':
                 var = self._current_char
                 self.__forward()
                 if self._current_char == "=":
@@ -80,7 +83,6 @@ class Lexer:
                 val = self._current_char
                 self.__forward()
                 self.parser.assignment_is_here=False
-
             else:
                 raise SyntaxError("bad token")
 
