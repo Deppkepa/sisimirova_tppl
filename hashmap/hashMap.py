@@ -1,19 +1,12 @@
 import re
 
-class SpecialHashMap:
-    def __init__(self):
-        self.data = {}
-
-    def __setitem__(self, key, value):
-        self.data[key] = value
-
-    def __getitem__(self, key):
-        return self.data[key]
-
+class SpecialHashMap(dict):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
     @property
     def iloc(self):
-        sorted_keys = sorted(self.data.keys())
-        values = [self.data[key] for key in sorted_keys]
+        sorted_keys = sorted(self.keys())
+        values = [self[key] for key in sorted_keys]
         return values
     def check_key_char(self, key):
         for char in key:
@@ -26,7 +19,7 @@ class SpecialHashMap:
         parts = list(filter(None, parts))
         results = {}
         key_parts = []
-        for key, value in self.data.items():
+        for key, value in self.items():
             cleaned_key = re.sub(r'[()]', '', key).split(',')
             if self.check_key_char(cleaned_key[0]):
                 continue
